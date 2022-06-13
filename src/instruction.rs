@@ -1,3 +1,4 @@
+/// Converts input call into an instruction which the processor can then process
 use std::convert::TryInto;
 use solana_program::program_error::ProgramError;
 use crate::errors::EscrowError::InvalidInstruction;

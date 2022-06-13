@@ -1,3 +1,4 @@
+/// Processes the request and implements the program's logic
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -8,7 +9,7 @@ use solana_program::{
     sysvar::{rent::Rent, Sysvar},
 };
 
-use crate::{instruction::EscrowInstruction, errors::EscrowError};
+use crate::{instruction::EscrowInstruction, errors::EscrowError, state::Escrow};
 
 pub struct Processor;
 impl Processor {

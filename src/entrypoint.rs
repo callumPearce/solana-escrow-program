@@ -1,3 +1,4 @@
+/// Entrypoint to the program (process_instruction == main)
 use solana_program::{
     account_info::AccountInfo, entrypoint, entrypoint::ProgramResult, msg, pubkey::Pubkey,
 };
