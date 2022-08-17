@@ -5,3 +5,4 @@ test-ledger/
 clients/keys/
 clients/node_modules/
 clients/build/
+.idea/
