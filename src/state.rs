@@ -8,16 +8,16 @@ use arrayref::{array_mut_ref, array_ref, array_refs, mut_array_refs};
 use solana_program::program_error::ProgramError;
 
 pub struct Escrow {
-    pub is_initialized: bool, /// Is the escrow account already in use
-    pub initializer_pubkey: Pubkey, /// Alice's account
-    pub temp_token_account_pubkey: Pubkey, /// Alice sends her tokens to this token account
-    pub initializer_token_to_receive_account_pubkey: Pubkey, /// Bob sends his tokens to this token account
-    pub expected_amount: u64, /// Expected amount ensures Bob sends enough tokens to initializer_token_to_receive_account_pubkey
+    pub is_initialized: bool, // Is the escrow account already in use
+    pub initializer_pubkey: Pubkey, // Alice's account
+    pub temp_token_account_pubkey: Pubkey, // Alice sends her tokens to this token account
+    pub initializer_token_to_receive_account_pubkey: Pubkey, // Bob sends his tokens to this token account
+    pub expected_amount: u64, // Expected amount ensures Bob sends enough tokens to initializer_token_to_receive_account_pubkey
 }
 
 impl Sealed for Escrow {}
 
-impl IsInitialiszed for Escrow {
+impl IsInitialized for Escrow {
     fn is_initialized(&self) -> bool {
         self.is_initialized
     }
@@ -40,14 +40,14 @@ impl Pack for Escrow {
         let is_initialized = match is_initialized {
             [0] => false,
             [1] => true,
-            _ => return Err(ProgramError:InvalidAccountData),
+            _ => return Err(ProgramError::InvalidAccountData),
         };
 
         Ok(Escrow {
             is_initialized,
             initializer_pubkey: Pubkey::new_from_array(*initializer_pubkey),
             temp_token_account_pubkey: Pubkey::new_from_array(*temp_token_account_pubkey),
-            initializer_token_to_receive_account_pubkey: Pubkey:new_from_array(*initializer_token_to_receive_account_pubkey),
+            initializer_token_to_receive_account_pubkey: Pubkey::new_from_array(*initializer_token_to_receive_account_pubkey),
             expected_amount: u64::from_le_bytes(*expected_amount),
         })
     }

@@ -6,6 +6,8 @@ use thiserror::Error;
 pub enum EscrowError {
     #[error("InvalidInstruction")]
     InvalidInstruction,
+    #[error("NotRentExempt")]
+    NotRentExempt,
 }
 
 impl From<EscrowError> for ProgramError {

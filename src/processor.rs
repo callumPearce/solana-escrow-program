@@ -31,7 +31,7 @@ impl Processor {
         program_id: &Pubkey,
     ) -> ProgramResult {
         let account_info_iter = &mut accounts.iter();
-        let initializer = next_account_info(account_info_iter);
+        let initializer = next_account_info(account_info_iter)?;
 
         if !initializer.is_signer {
             return Err(ProgramError::MissingRequiredSignature);
@@ -53,17 +53,17 @@ impl Processor {
 
         let mut escrow_info = Escrow::unpack_unchecked(&escrow_account.try_borrow_data()?)?;
         if escrow_info.is_initialized() {
-            return Err(ProgramError:AccountAlreadyInitialized);
+            return Err(ProgramError::AccountAlreadyInitialized);
         }
 
         escrow_info.is_initialized = true;
         escrow_info.initializer_pubkey = *initializer.key;
         escrow_info.temp_token_account_pubkey = *temp_token_account.key;
         escrow_info.initializer_token_to_receive_account_pubkey = *token_to_receive_account.key;
-        escrow_info.amount = amount;
+        escrow_info.expected_amount = amount;
 
         // Calls pack_into_slice to init the escrow account
-        Escrow::pack(escrow_info, &mut escrow_account.try_borrow_data()?)?;
+        Escrow::pack(escrow_info, &mut escrow_account.try_borrow_mut_data()?)?;
 
         let (pda, _bumnp_seed) = Pubkey::find_program_address(&[b"escrow"], program_id);
 
