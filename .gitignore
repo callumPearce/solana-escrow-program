@@ -1,3 +1,7 @@
 /*-dump.txt
 /*.so
 /target/
+test-ledger/
+clients/keys/
+clients/node_modules/
+clients/build/
