@@ -35,9 +35,9 @@ const alice = async () => {
     const connection = new Connection("http://localhost:8899", "confirmed");
 
 
-    // Create the temp X token account which Alice will transfer ownership to escrows' PDA
+    // // Create the temp X token account which Alice will transfer ownership to escrows' PDA
     const createTempTokenAccountIx = SystemProgram.createAccount({
-        programId: SystemProgram.programId,
+        programId: TOKEN_PROGRAM_ID,
         space: AccountLayout.span,
         lamports: await connection.getMinimumBalanceForRentExemption(
             AccountLayout.span
@@ -48,10 +48,10 @@ const alice = async () => {
 
     // Initialise the token account
     const initTempAccountIx = createInitializeAccountInstruction(
-        tempXTokenAccountKeypair.publicKey,
-        XTokenMintPubkey,
-        aliceKeypair.publicKey,
-        TOKEN_PROGRAM_ID
+        tempXTokenAccountKeypair.publicKey, // account
+        XTokenMintPubkey, // mint
+        aliceKeypair.publicKey, // owner
+        TOKEN_PROGRAM_ID // program ID
     );
 
     // Transfer the expected number of X tokens from Alice's account to the temp account
@@ -105,13 +105,13 @@ const alice = async () => {
         createTempTokenAccountIx,
         initTempAccountIx,
         transferXTokensToTempAccIx,
-        // createEscrowAccountIx,
-        // initEscrowIx
+        createEscrowAccountIx,
+        initEscrowIx
     );
     console.log("Sending Alice's transaction...");
     await connection.sendTransaction(
         tx,
-        [aliceKeypair, tempXTokenAccountKeypair],//, escrowKeypair],
+        [aliceKeypair, tempXTokenAccountKeypair, escrowKeypair],
         { skipPreflight: false, preflightCommitment: "confirmed" }
     );
 

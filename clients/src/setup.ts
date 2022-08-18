@@ -75,6 +75,9 @@ const setup = async () => {
     console.log("Requesting SOL for Client...");
     await connection.requestAirdrop(clientKeypair.publicKey, LAMPORTS_PER_SOL * 10);
 
+    // sleep to allow time to update
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const [mintXPubKey, aliceTokenAccountForX, bobTokenAccountForX] = await setupMint(
         "X",
         connection,
